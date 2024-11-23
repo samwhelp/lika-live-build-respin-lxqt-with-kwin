@@ -1,0 +1,119 @@
+
+
+##
+## # Desktop Environment
+##
+
+
+
+
+##
+## ## Link
+##
+## * Debian Wiki / [LXQt](https://wiki.debian.org/LXQt)
+## * Debian Wiki / [Openbox](https://wiki.debian.org/Openbox)
+## * Debian Wiki / [DesktopEnvironment](https://wiki.debian.org/DesktopEnvironment)
+##
+
+
+
+
+##
+## ## Package / Desktop Environment / Lxqt
+##
+
+
+##
+## ### LXQT Core
+##
+## > The lxqt-core metapackage provides only the core LXQt components.
+##
+
+#lxqt-core
+
+
+
+
+##
+## ### LXQT
+##
+## > The lxqt metapackage provides the LXQt components and some other recommended packages.
+##
+
+lxqt
+
+
+
+
+##
+## ### LXQT Task
+##
+## > The task-lxqt-desktop package installs the full Debian desktop with LXQt.
+##
+
+#task-lxqt-desktop
+
+
+
+
+#
+## ## Package / Window Manager / Kwin
+##
+
+#kwin-wayland
+kwin-x11
+kwin-addons
+kwin-common
+kwin-data
+
+
+konsole
+yakuake
+dolphin
+kate
+kwrite
+kdevelop
+
+
+
+
+##
+## ## Package / Window Manager / Openbox
+##
+
+openbox
+obconf
+obmenu
+
+picom
+
+feh
+
+#tint2
+
+#rofi
+
+#plank
+
+
+
+
+##
+## ## Package / Extra
+##
+
+accountsservice
+
+asunder
+atril
+
+
+gnome-disk-utility
+gnome-keyring
+gnome-nettool
+gnome-system-tools
+
+remmina
+
+pavucontrol
+pulseaudio
