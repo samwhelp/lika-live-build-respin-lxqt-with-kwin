@@ -56,7 +56,7 @@ lxqt
 
 
 
-#
+##
 ## ## Package / Window Manager / Kwin
 ##
 
@@ -72,7 +72,7 @@ yakuake
 dolphin
 kate
 kwrite
-kdevelop
+#kdevelop
 
 
 
