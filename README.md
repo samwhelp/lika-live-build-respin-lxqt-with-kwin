@@ -2,7 +2,7 @@
 
 # Home
 
-> lika-live-build-respin-lxqt-with-kwin
+> [lika-live-build-respin-lxqt-with-kwin](https://github.com/samwhelp/lika-live-build-respin-lxqt-with-kwin)
 
 
 
