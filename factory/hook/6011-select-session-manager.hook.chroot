@@ -54,9 +54,9 @@ util_session_manager_set_lxqt () {
 
 model_start () {
 
-	#util_session_manager_set_lxqt
+	util_session_manager_set_lxqt
 
-	util_session_manager_set_plasma
+	#util_session_manager_set_plasma
 
 	return 0
 }
