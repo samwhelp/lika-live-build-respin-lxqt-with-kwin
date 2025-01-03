@@ -1,0 +1,202 @@
+#!/bin/sh
+
+#set -e
+
+
+
+
+##
+## ## Select Display Manager
+##
+
+echo
+echo "Hook: running ${0}"
+echo
+
+
+
+
+##
+## ## Link
+##
+## * Search: [change debian default x display manager](https://www.google.com/search?q=change+debian+default+x+display+manager)
+## * [Reconfigure the display-manager non-interactively](https://askubuntu.com/questions/1114525/reconfigure-the-display-manager-non-interactively)
+## * Debian Wiki / [DisplayManager](https://wiki.debian.org/DisplayManager)
+## * Arch Wiki / [Display manager](https://wiki.archlinux.org/title/Display_manager)
+##
+
+##
+## * `sudo dpkg-reconfigure lightdm`
+## * `sudo dpkg-reconfigure sddm`
+##
+
+##
+## * https://packages.debian.org/source/stable/lightdm
+## * https://packages.debian.org/source/stable/sddm
+##
+
+##
+## * https://salsa.debian.org/xfce-extras-team/lightdm
+## * https://salsa.debian.org/qt-kde-team/3rdparty/sddm
+##
+
+##
+## * `cat /var/lib/dpkg/info/lightdm.config`
+## * [/var/lib/dpkg/info/lightdm.config](https://salsa.debian.org/xfce-extras-team/lightdm/-/blob/debian/master/debian/lightdm.config?ref_type=heads)
+## * `cat /var/lib/dpkg/info/sddm.config`
+## * [/var/lib/dpkg/info/sddm.config](https://salsa.debian.org/qt-kde-team/3rdparty/sddm/-/blob/master/debian/sddm.config?ref_type=heads)
+##
+
+
+##
+## `file /etc/systemd/system/display-manager.service`
+## `cat /etc/X11/default-display-manager`
+##
+
+##
+## ## lightdm
+##
+## run
+##
+## ``` sh
+## sudo apt-get install lightdm
+## sudo dpkg-reconfigure lightdm
+## ```
+##
+## or run
+##
+## ``` sh
+## sudo apt-get install lightdm
+##
+## sudo rm /etc/systemd/system/display-manager.service
+## sudo systemctl enable lightdm
+##
+## sudo sh -c 'echo set shared/default-x-display-manager $(which lightdm) | debconf-communicate'
+##
+## sudo which lightdm | sudo tee /etc/X11/default-display-manager
+## ```
+##
+
+
+##
+## ## sddm
+##
+## run
+##
+## ``` sh
+## sudo apt-get install sddm
+## sudo dpkg-reconfigure sddm
+## ```
+##
+## or run
+##
+## ``` sh
+## sudo apt-get install sddm
+##
+## sudo rm /etc/systemd/system/display-manager.service
+## sudo systemctl enable sddm
+##
+## sudo sh -c 'echo set shared/default-x-display-manager $(which sddm) | debconf-communicate'
+##
+## sudo which sddm | sudo tee /etc/X11/default-display-manager
+## ```
+##
+## check
+##
+## ``` sh
+## file /etc/systemd/system/display-manager.service
+## cat /etc/X11/default-display-manager
+## sudo sh -c 'echo get shared/default-x-display-manager | debconf-communicate
+## ```
+##
+
+
+
+
+##
+## ## Util
+##
+
+util_dm_set () {
+
+	local display_manager_selected="lightdm"
+	local display_manager_service_file_path="/etc/systemd/system/display-manager.service"
+	local default_display_manager_file_path="/etc/X11/default-display-manager"
+
+	if [ -n "${1}" ]; then
+		display_manager_selected="${1}"
+	fi
+
+
+	display_manager_bin_path="$(which ${display_manager_selected})"
+
+	if [ ! -e "${display_manager_bin_path}" ] ; then
+		echo "${display_manager_selected} seems not to be a valid display manager or is not installed."
+		exit 1
+	fi
+
+
+
+
+	##
+	## ## main process
+	##
+
+	echo "${display_manager_bin_path}" > "${default_display_manager_file_path}"
+	DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true dpkg-reconfigure "${display_manager_selected}"
+	echo set shared/default-x-display-manager "${display_manager_selected}" | debconf-communicate &> /dev/null
+
+
+
+
+	##
+	## ## done info
+	##
+
+	echo
+	echo -n "I: systemd service is set to: "
+	readlink "${display_manager_service_file_path}"
+
+	echo
+	echo -n "I: ${default_display_manager_file_path} is set to: "
+	cat "${default_display_manager_file_path}"
+
+	#echo
+	#echo -n "I: debconf is set to: "
+	#echo get shared/default-x-display-manager | debconf-communicate
+
+
+	return 0
+}
+
+
+
+
+##
+## ## Model / Start
+##
+
+model_start () {
+
+	#local display_manager="lightdm"
+	local display_manager="sddm"
+
+	util_dm_set "${display_manager}"
+
+	return 0
+}
+
+
+
+
+##
+## ## Main / Start
+##
+
+__main__ () {
+
+	model_start "${@}"
+
+}
+
+__main__ "${@}"

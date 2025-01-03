@@ -1,0 +1,77 @@
+#!/bin/sh
+
+#set -e
+
+
+
+
+##
+## ## Select Session Manager
+##
+
+echo
+echo "Hook: running ${0}"
+echo
+
+
+
+
+##
+## > Refer: [/usr/lib/live/config/0085-sddm](https://salsa.debian.org/live-team/live-config/-/blob/master/components/0085-sddm?ref_type=heads#L68)
+##
+## > Refer: [/usr/lib/live/config/1140-xserver-xorg](https://salsa.debian.org/live-team/live-config/-/blob/master/components/1140-xserver-xorg?ref_type=heads#L98)
+##
+
+
+
+
+##
+## ## Util
+##
+
+util_session_manager_set_plasma () {
+
+	update-alternatives --quiet --set x-session-manager /usr/bin/startplasma-x11
+
+
+	return 0
+}
+
+util_session_manager_set_lxqt () {
+
+	update-alternatives --quiet --set x-session-manager /usr/bin/startlxqt
+
+
+	return 0
+}
+
+
+
+
+##
+## ## Model / Start
+##
+
+model_start () {
+
+	#util_session_manager_set_lxqt
+
+	util_session_manager_set_plasma
+
+	return 0
+}
+
+
+
+
+##
+## ## Main / Start
+##
+
+__main__ () {
+
+	model_start "${@}"
+
+}
+
+__main__ "${@}"
